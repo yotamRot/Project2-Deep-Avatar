@@ -1,0 +1,15 @@
+
+https://github.com/rinongal/StyleGAN-nada
+
+https://github.com/vijishmadhavan/ArtLine
+
+https://github.com/nerdyrodent/VQGAN-CLIP
+
+https://github.com/AliaksandrSiarohin/first-order-model
+
+https://stitch-time.github.io/
+
+https://github.com/vt-vl-lab/3d-photo-inpainting
+
+https://github.com/nerdyrodent/VQGAN-CLIP
+
