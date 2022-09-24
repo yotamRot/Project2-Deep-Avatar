@@ -1,6 +1,7 @@
 import pymeshlab
 import webbrowser
 import paramiko
+import os,time
 
 command='cd /home/user_236/project/ICON; /home/user_236/miniconda3/envs/icon/bin/python  -m apps.infer -cfg ' \
         './configs/icon-filter.yaml -gpu 0 -in_dir ./input -out_dir ./output -export_video -loop_smpl 100  ' \
@@ -24,23 +25,28 @@ stdin, stdout, stderr = ssh.exec_command(command)
 for line in stdout:
     print(line.rstrip())
 
-found_err = False
-for line in stderr:
-    found_err = True
-    print(line.rstrip())
-if found_err:
-    print("errorroror!!!!!!!")
-    exit(1)
+# found_err = False
+# for line in stderr:
+#     print("errorroror!!!!!!!")
+#     found_err = True
+#     print(line.rstrip())
+#
+#
+# if found_err:
+#     print("errorroror done!!!!!!!")
 
 ftp_client = ssh.open_sftp()
-ftp_client.get('cd /home/user_236/project/ICON/output/input_yotam.obj', 'output/input_yotam.obj',)
+ftp_client.get('/home/user_236/project/ICON/output/input_yotam.obj', '../output/output_yotam.obj',)
 ftp_client.close()
 ssh.close()
 # create a new MeshSet
 ms = pymeshlab.MeshSet()
 
+while not os.path.exists("../output/output_yotam.obj"):
+    time.sleep(1)
+
 # load mesh
-ms.load_new_mesh("output_yotam.obj")
+ms.load_new_mesh("../output/output_yotam.obj")
 
 # apply convex hull filter to the current selected mesh (last loaded)
 ms.compute_texcoord_parametrization_triangle_trivial_per_wedge() # textname will be filename of a png, should not be a full path
@@ -49,7 +55,7 @@ ms.compute_texmap_from_color(textname=f"my_texture_name.jpg") # textname will be
 
 
 # save the current selected mesh
-ms.save_current_mesh("convex_hull.obj")
+ms.save_current_mesh("../output/final.obj")
 
 # get a reference to the current selected mesh
 m = ms.current_mesh()
